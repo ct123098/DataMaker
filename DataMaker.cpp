@@ -3,56 +3,117 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
+#include <ctime>
 
 #include "DataMaker.h"
 
 using namespace std;
 
 // DataMaker
-DataMaker::DataMaker(string _name, int _number, string _stdName)
+DataMaker::DataMaker(string _name, int _number, string _stdName, string _forceName)
 {
 	setName(_name);
 	setNumber(_number);
-	setStdName(_stdName);
-	fin.clear(); fout.clear();
+	
+	if(!_stdName.empty()) setStandardName(_stdName);
+	if(!_forceName.empty()) setForceName(_forceName);
+	
+	fin.clear();
+	fout.clear();
 	inputFile = outputFile = "";
+	
+	srand(time(0));
 }
-void DataMaker::setName(string _name)
+
+DataMaker &DataMaker::setName(string _name)
 {
 	name = _name;
 	dataDir = _name + "\\";
+	return *this;
 }
-void DataMaker::setNumber(int _number)
+
+DataMaker &DataMaker::setNumber(int _number)
 {
 	number = _number;
-	method.resize(number + 1);
+	method.resize(_number + 2);
 	for(int i = 0; i < method.size(); i++)
 		method[i] = NULL;
+	return *this;
 }
-void DataMaker::setStdName(string _stdName)
+
+DataMaker &DataMaker::setStandardName(string _name)
 {
-	stdName = _stdName;
+	standardName = _name;
+	int res = system("g++ " + standardName + ".cpp " + "-o " + standardName);
+	if(res != 0)
+		error("Error occured when compiling standard code!");
+	return *this;
 }
-void DataMaker::setMethod(int l, int r, void (*fun)(DataMaker&, int))
+
+DataMaker &DataMaker::setForceName(string _name)
+{
+	forceName = _name;
+	int res = system("g++ " + forceName + ".cpp " + "-o " + forceName);
+	if(res != 0)
+		error("Error occured when compiling force code!");
+	return *this;
+}
+
+DataMaker &DataMaker::setMethod(int l, int r, void (*fun)(DataMaker &, int))
 {
 	if(l > r || l < 1 || r > number)
-		error(string() + "setMethod(" + l + ", " + r + ")");
+		error("setMethod() : l, r is invalid");
 	for(int i = l; i <= r; i++)
 		method[i] = fun;
+	return *this;
 }
+
+void DataMaker::runStandardProgram()
+{
+	if(standardName == "")
+		error("standardName id empty!");
+	if(inputFile == "")
+		error("no input file");
+	if(outputFile == "")
+		error("no output file");
+	
+	fin.close();
+	fout.close();
+	system(standardName + " < " + inputFile + " > " + outputFile);
+	fin.open(inputFile.c_str(), ios::app);
+	fout.open(outputFile.c_str(), ios::app);
+}
+
+void DataMaker::runForceProgram()
+{
+	if(forceName == "")
+		error("forceName is empty!");
+	if(inputFile == "")
+		error("no input file");
+	if(outputFile == "")
+		error("no output file");
+	
+	fin.close();
+	fout.close();
+	system(forceName + " < " + inputFile + " > " + outputFile);
+	fin.open(inputFile.c_str(), ios::app);
+	fout.open(outputFile.c_str(), ios::app);
+}
+
 void DataMaker::generate()
 {
 	if(name == "") error("Name is empty!");
-	if(number <= 0) error("Number is invalid");
+	if(number < 0) error("Number is invalid");
 	
 	system("mkdir " + dataDir);
 	
 	for(int i = 1; i <= number; i++)
 	{
+		cout << "Running Case#" << i << " : " << endl;
 		inputFile = dataDir + name + i + ".in";
-		outputFile = dataDir + name + i + ".out";	
-		fin.open(inputFile.c_str());
-		fout.open(outputFile.c_str());
+		outputFile = dataDir + name + i + ".out";
+		fin.open(inputFile.c_str(), ios::out);
+		fout.open(outputFile.c_str(), ios::out);
 		
 		if(!fin) error("Can't open " + inputFile);
 		if(!fout) error("Can't open " + outputFile);
@@ -61,53 +122,6 @@ void DataMaker::generate()
 		
 		fin.close();
 		fout.close();
-		
-		if(stdName != "")
-			runStd();
 	}
 	cout << "Succeed!" << endl;
 }
-void DataMaker::runStd()
-{
-	if(stdName == "") error("stdName id empty!");
-	
-	fin.close();
-	fout.close();
-	system(string() + stdName + " < " + inputFile + " > " + outputFile);
-}
-
-// rand extension
-int rand(int l, int r)
-{
-	return (((rand() & 32767) << 15) | (rand() & 32767)) % (r - l + 1) + l;
-}
-
-//system extension
-int system(const string &cmd)
-{
-	return system(cmd.c_str());
-}
-
-// overload string + int/double
-string operator + (const string &s, const int &a)
-{
-	char tmp[10];
-	sprintf(tmp, "%d", a);
-	return s + tmp;
-}
-string operator + (const string &s, const double &a)
-{
-	char tmp[10];
-	sprintf(tmp, "%lf", a);
-	return s + tmp;
-}
-
-// throw an exception
-void error(const string &err)
-{
-	cout << "Error encountered : " << err << endl;
-	exit(1);
-}
-
-
-

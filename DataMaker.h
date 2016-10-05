@@ -1,6 +1,16 @@
+#ifndef DATAMAKER_DATAMAKER_H
+#define DATAMAKER_DATAMAKER_H
+
+#include <iostream>
 #include <fstream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
 #include <vector>
 #include <string>
+
+#include "functions.h"
 
 using namespace std;
 
@@ -9,41 +19,33 @@ class DataMaker
 {
 
 public:
+	fstream fin;
+	fstream fout;
 	
-	ofstream fin;
-	ofstream fout;
+	DataMaker(string _name, int _number, string _stdName = "", string _forceName = "");
 	
-	DataMaker(string _name, int _number, string _stdName = "");
+	DataMaker &setName(string _name);
 	
-	void setName(string _name);
-	void setNumber(int _number);
-	void setStdName(string _stdName);
-	void setMethod(int l, int r, void (*fun)(DataMaker&, int));
+	DataMaker &setNumber(int _number);
+	
+	DataMaker &setStandardName(string _name);
+	
+	DataMaker &setForceName(string _name);
+	
+	DataMaker &setMethod(int l, int r, void (*fun)(DataMaker &, int));
+	
+	void runStandardProgram();
+	
+	void runForceProgram();
 	
 	void generate();
 
 private:
 	string name;
-	string stdName;
-	string dataDir, inputFile, outputFile;
 	int number;
-	vector<void (*)(DataMaker&, int)> method;
-	
-	void runStd();
-
+	string standardName, forceName;
+	string dataDir, inputFile, outputFile;
+	vector<void (*)(DataMaker &, int)> method;
 };
 
-// rand extension
-int rand(int l, int r);
-
-//system extension
-int system(const string &cmd);
-
-// overload string + int/double
-string operator + (const string &s, const int &a);
-string operator + (const string &s, const double &a);
-
-// throw an exception
-void error(const string &err);
-
-
+#endif //DATAMAKER_DATAMAKER_H

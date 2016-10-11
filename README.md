@@ -15,37 +15,53 @@ TODO~~~
 
 #### Constructor
 
-`void DataMaker::DataMaker(string _name, int _number, )`
+`void DataMaker::DataMaker(string _name, int _number, string _stdName, string _forceName)`
+
+| Parameter Name | type   | compulsory/optional | description                              |
+| -------------- | ------ | ------------------- | ---------------------------------------- |
+| _name          | string | compulsory          | the name of the problem                  |
+| _number        | int    | compulsory          | the total of the data group              |
+| _stdName       | string | optional            | the name of the standard code            |
+| _forceName     | string | optional            | the name of the code using brute force algorithm |
 
 #### Settings
 
-`DataMaker& setName(string _name)` TODO
+`DataMaker& setName(string _name)` To set the name of the problem.
 
-`DataMaker& setNumber(int _number)`TODO
+`DataMaker& setNumber(int _number)`To set the total of the data group.
 
-`DataMaker& setStandardName(string _name)`TODO
+`DataMaker& setStandardName(string _name)`To set the name of the standard code.
 
-`DataMaker& setForceName(string _name)`TODO
+`DataMaker& setForceName(string _name)`To set the name of the code using brute force algorithm.
 
 
 
 #### Custom functions
 
-You can write your functions to generate data according to your purpose. Your functions must written as `void (DataMaker&, int)`
+You can write your functions to generate data according to your purpose. Your functions must written as `void (DataMaker&, int)`. These functions well be used when the function `generate()` be called.
 
-the parameter `DataMaker&` represent the instance you declared, and the `int` represent the number of this group of data.
+| Parameter Name                | type       | compulsory/optional | description                              |
+| ----------------------------- | ---------- | ------------------- | ---------------------------------------- |
+| *Coustom* (`D` is recommend)  | DataMaker& | compulsory          | the DataMaker instance you have declared |
+| *Coustom* (`id` is recommend) | int        | compulsory          | the number of this group of data         |
 
 
 
-`DataMaker& setMethod(int l, int r, void (*)(DataMaker&, int))`TODO
+`DataMaker& setMethod(int l, int r, void (*fun)(DataMaker&, int))`
 
-
+| Parameter Name | type                      | compulsory/optional | description                              |
+| -------------- | ------------------------- | ------------------- | ---------------------------------------- |
+| l              | int                       | compulsory          | the lower bound                          |
+| r              | int                       | compulsory          | the upper bound                          |
+| fun            | void (*)(DataMaker&, int) | compulsory          | the function well be used to generate groups of data whose index belong to the interval [l, r] |
 
 
 
 #### Generate
 
-`void DataMaker::generate(void)` TODO
+`void DataMaker::generate(void)` 
+
+When you have finished all the setting, you can call this function and wait for the data.
 
 
 

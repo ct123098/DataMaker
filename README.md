@@ -37,7 +37,7 @@ the parameter `DataMaker&` represent the instance you declared, and the `int` re
 
 
 
-`DataMaker& setForceName(string _name)`TODO
+`DataMaker& setMethod(int l, int r, void (*)(DataMaker&, int))`TODO
 
 
 

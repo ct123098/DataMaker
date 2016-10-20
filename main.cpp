@@ -27,9 +27,9 @@ void fun2(DataMaker &D, int id)
 
 int main()
 {
-	DataMaker D("AplusB", 10);
+	DataMaker D("AplusB", 1, 10);
 	
-	D.setStandardName("std").setMethod(1, 4, fun1).setMethod(5, 10, fun2);
+	D.setStandardName("AplusB.cpp").setMethod(1, 4, fun1).setMethod(5, 10, fun2);
 	D.generate();
 	
 	return 0;

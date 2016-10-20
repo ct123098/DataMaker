@@ -22,11 +22,11 @@ public:
 	fstream fin;
 	fstream fout;
 	
-	DataMaker(string _name, int _number, string _stdName = "", string _forceName = "");
+	DataMaker(string _name, int _lower, int _upper, string _stdName = "", string _forceName = "");
 	
 	DataMaker &setName(string _name);
-	
-	DataMaker &setNumber(int _number);
+
+	DataMaker &setBound(int _lower, int _upper);
 	
 	DataMaker &setStandardName(string _name);
 	
@@ -42,7 +42,7 @@ public:
 
 private:
 	string name;
-	int number;
+	int lowerBound, upperBound;
 	string standardName, forceName;
 	string dataDir, inputFile, outputFile;
 	vector<void (*)(DataMaker &, int)> method;

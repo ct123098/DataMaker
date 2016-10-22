@@ -12,23 +12,34 @@ using namespace std;
 // DataMaker
 DataMaker::DataMaker(string _name, int _lower, int _upper, string _stdName, string _forceName)
 {
-	setName(_name);
-	setBound(_lower, _upper);
-
-	if(!_stdName.empty()) setStandardName(_stdName);
-	if(!_forceName.empty()) setForceName(_forceName);
-
+	srand(time(0));
+	
 	fin.clear();
 	fout.clear();
 	inputFile = outputFile = "";
+	
+	setTmpDir("Tmp");
+	setName(_name);
+	setBound(_lower, _upper);
+	
+	if(!_stdName.empty()) setStandardName(_stdName);
+	if(!_forceName.empty()) setForceName(_forceName);
+	
+}
 
-	srand(time(0));
+DataMaker &DataMaker::setTmpDir(string _name)
+{
+	tmpDir = _name + getPathSeparator();
+	system(removeDirectory(tmpDir));
+	system(makeDirectory(tmpDir));
+	return *this;
 }
 
 DataMaker &DataMaker::setName(string _name)
 {
 	name = _name;
-	dataDir = _name + "/";
+	dataDir = name + getPathSeparator();
+	system(makeDirectory(dataDir));
 	return *this;
 }
 
@@ -42,21 +53,23 @@ DataMaker &DataMaker::setBound(int _lower, int _upper)
 	return *this;
 }
 
-DataMaker &DataMaker::DataMaker::setStandardName(string _name)
+DataMaker &DataMaker::setStandardName(string _name)
 {
 	standardName = _name;
-	int res = system("g++ " + standardName + " " + "-o " + "standard");
-	if(res != 0)
-		error("Error occured when compiling standard code!");
+	if(system(compile(standardName, tmpDir + "standard")))
+		error(string() + "Error occured when compiling standard code! "
+			  + "Running command : "
+			  + compile(standardName, tmpDir + "standard"));
 	return *this;
 }
 
 DataMaker &DataMaker::setForceName(string _name)
 {
 	forceName = _name;
-	int res = system("g++ " + forceName + " " + "-o " + "force");
-	if(res != 0)
-		error("Error occured when compiling force code!");
+	if(system(compile(forceName, tmpDir + "force")))
+		error(string() + "Error occured when compiling force code! "
+			  + "Running command : "
+			  + compile(forceName, tmpDir + "force"));
 	return *this;
 }
 
@@ -69,6 +82,12 @@ DataMaker &DataMaker::setMethod(int l, int r, void (*fun)(DataMaker &, int))
 	return *this;
 }
 
+
+DataMaker &DataMaker::setMethod(int x, void (*fun)(DataMaker &, int))
+{
+	return setMethod(x, x, fun);
+}
+
 void DataMaker::runStandardProgram()
 {
 	if(standardName == "")
@@ -77,10 +96,13 @@ void DataMaker::runStandardProgram()
 		error("no input file");
 	if(outputFile == "")
 		error("no output file");
-
+	
 	fin.close();
 	fout.close();
-	system(string() + "./standard" + " < " + inputFile + " > " + outputFile);
+	if(system(run(tmpDir + "standard")
+			  + redirectInput(inputFile)
+			  + redirectOutput(outputFile)))
+		error("can't run standard program");
 	fin.open(inputFile.c_str(), ios::app);
 	fout.open(outputFile.c_str(), ios::app);
 }
@@ -93,10 +115,13 @@ void DataMaker::runForceProgram()
 		error("no input file");
 	if(outputFile == "")
 		error("no output file");
-
+	
 	fin.close();
 	fout.close();
-	system(string() + "./force" + " < " + inputFile + " > " + outputFile);
+	if(system(run(tmpDir + "force")
+			  + redirectInput(inputFile)
+			  + redirectOutput(outputFile)))
+		error("can't run force program");
 	fin.open(inputFile.c_str(), ios::app);
 	fout.open(outputFile.c_str(), ios::app);
 }
@@ -105,22 +130,22 @@ void DataMaker::generate()
 {
 	if(name == "") error("Name is empty!");
 	if(upperBound < lowerBound) error("Number is invalid");
-
-	system("mkdir " + dataDir);
-
+	
 	for(int i = lowerBound; i <= upperBound; i++)
 	{
-		cout << "Running Case#" << i << " : " << endl;
 		inputFile = dataDir + name + i + ".in";
 		outputFile = dataDir + name + i + ".out";
+		
+		cout << "Running Case#" << i << " (" + inputFile + ", " + outputFile + ") " + " : " << endl;
+		
 		fin.open(inputFile.c_str(), ios::out);
 		fout.open(outputFile.c_str(), ios::out);
-
+		
 		if(!fin) error("Can't open " + inputFile);
 		if(!fout) error("Can't open " + outputFile);
-
+		
 		method[i - lowerBound](*this, i);
-
+		
 		fin.close();
 		fout.close();
 	}

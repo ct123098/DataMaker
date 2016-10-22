@@ -7,29 +7,32 @@
 
 using namespace std;
 
+DataMaker D("AplusB", 1, 10);
+fstream &fin = D.fin;
+fstream &fout = D.fout;
+
 void fun1(DataMaker &D, int id)
 {
 	int a = rand(1, id), b = rand(id, 10);
 	cout << a << ' ' << b << endl;
-	D.fin << a << endl;
-	D.fin << b << endl;
-	D.fout << a + b << endl;
+	fin << a << endl;
+	fin << b << endl;
+	fout << a + b << endl;
 }
 
 void fun2(DataMaker &D, int id)
 {
 	int a = rand(0, 1000000 * id * id * id), b = rand(0, 1000000 * id * id * id);
 	cout << a << ' ' << b << endl;
-	D.fin << a << endl;
-	D.fin << b << endl;
+	fin << a << endl;
+	fin << b << endl;
 	D.runStandardProgram();
 }
 
 int main()
 {
-	DataMaker D("AplusB", 1, 10);
+	D.setStandardName("std.cpp").setMethod(1, 4, fun1).setMethod(5, 10, fun2);
 	
-	D.setStandardName("AplusB.cpp").setMethod(1, 4, fun1).setMethod(5, 10, fun2);
 	D.generate();
 	
 	return 0;

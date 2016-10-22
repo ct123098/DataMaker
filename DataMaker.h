@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <algorithm>
 
 #include <vector>
 #include <string>
@@ -24,8 +25,10 @@ public:
 	
 	DataMaker(string _name, int _lower, int _upper, string _stdName = "", string _forceName = "");
 	
+	DataMaker &setTmpDir(string _name);
+	
 	DataMaker &setName(string _name);
-
+	
 	DataMaker &setBound(int _lower, int _upper);
 	
 	DataMaker &setStandardName(string _name);
@@ -33,6 +36,8 @@ public:
 	DataMaker &setForceName(string _name);
 	
 	DataMaker &setMethod(int l, int r, void (*fun)(DataMaker &, int));
+	
+	DataMaker &setMethod(int x, void (*fun)(DataMaker &, int));
 	
 	void runStandardProgram();
 	
@@ -44,7 +49,7 @@ private:
 	string name;
 	int lowerBound, upperBound;
 	string standardName, forceName;
-	string dataDir, inputFile, outputFile;
+	string dataDir, tmpDir, inputFile, outputFile;
 	vector<void (*)(DataMaker &, int)> method;
 };
 

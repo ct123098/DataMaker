@@ -3,9 +3,11 @@
 !DataMaker.h
 !DataMaker.cpp
 
-!function.h
-!function.cpp
+!functions.h
+!functions.cpp
 
 !main.cpp
 
 !README.md
+
+!.gitignore

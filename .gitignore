@@ -1,10 +1,10 @@
 *
 
-!DataMaker.h
-!DataMaker.cpp
+!Core/DataMaker.h
+!Core/DataMaker.cpp
 
-!functions.h
-!functions.cpp
+!Core/functions.h
+!Core/functions.cpp
 
 !main.cpp
 

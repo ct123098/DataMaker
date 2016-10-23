@@ -2,16 +2,16 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "DataMaker.cpp"
-#include "functions.cpp"
+#include "Core/DataMaker.cpp"
+#include "Core/functions.cpp"
 
 using namespace std;
 
 DataMaker D("AplusB", 1, 10);
-fstream &fin = D.fin;
-fstream &fout = D.fout;
+fstream &fin = D.getFin();
+fstream &fout = D.getFout();
 
-void fun1(DataMaker &D, int id)
+void fun1(int id)
 {
 	int a = rand(1, id), b = rand(id, 10);
 	cout << a << ' ' << b << endl;
@@ -20,7 +20,7 @@ void fun1(DataMaker &D, int id)
 	fout << a + b << endl;
 }
 
-void fun2(DataMaker &D, int id)
+void fun2(int id)
 {
 	int a = rand(0, 1000000 * id * id * id), b = rand(0, 1000000 * id * id * id);
 	cout << a << ' ' << b << endl;
@@ -31,7 +31,9 @@ void fun2(DataMaker &D, int id)
 
 int main()
 {
-	D.setStandardName("std.cpp").setMethod(1, 4, fun1).setMethod(5, 10, fun2);
+	D.setStandardName("std.cpp")
+			.setMethod(1, 4, fun1)
+			.setMethod(5, 10, fun2);
 	
 	D.generate();
 	

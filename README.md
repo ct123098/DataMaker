@@ -85,11 +85,13 @@ These functions may help you a lot.
 
 
 
-`int rand(int l, int r)` Generate a random integer from [l, r] (You should ensure that l is not more than r). 
+`int rand(int l, int r)` Generate a random integer from [l, r] . 
 
-`long long rand(long long l, long long r)` Generate a random integer from [l, r] (You should ensure that l is not more than r). 
+`long long rand(long long l, long long r)` Generate a random integer from [l, r]. 
 
-`double rand(double l, double r)` Generate a random real number form [l, r) (You should ensure that l is not more than r).
+`double rand(double l, double r)` Generate a random real number form [l, r).
+
+(You should ensure that l is not more than r)
 
 
 
@@ -180,4 +182,3 @@ int main()
 	return 0;
 }
 ```
-

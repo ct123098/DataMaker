@@ -48,7 +48,6 @@ string redirectInput(const string &name);
 string redirectOutput(const string &name);
 
 
-
 // overload string + int/double
 string operator +(const string &s, const int &a);
 
@@ -60,5 +59,8 @@ string operator +(const double &a, const string &s);
 
 // throw an exception
 void error(const string &err);
+
+const string SEP = getPathSeparator();
+const string OS = getOS();
 
 #endif //DATAMAKER_FUNCTIONS_H

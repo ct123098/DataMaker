@@ -16,14 +16,19 @@
 using namespace std;
 
 // DataMaker
+typedef void(*CustomFunction)(int);
+
 class DataMaker
 {
-
 public:
-	fstream fin;
-	fstream fout;
 	
 	DataMaker(string _name, int _lower, int _upper, string _stdName = "", string _forceName = "");
+	
+	~DataMaker();
+	
+	fstream &getFin();
+	
+	fstream &getFout();
 	
 	DataMaker &setTmpDir(string _name);
 	
@@ -35,9 +40,9 @@ public:
 	
 	DataMaker &setForceName(string _name);
 	
-	DataMaker &setMethod(int l, int r, void (*fun)(DataMaker &, int));
+	DataMaker &setMethod(int l, int r, CustomFunction fun);
 	
-	DataMaker &setMethod(int x, void (*fun)(DataMaker &, int));
+	DataMaker &setMethod(int x, CustomFunction fun);
 	
 	void runStandardProgram();
 	
@@ -46,11 +51,14 @@ public:
 	void generate();
 
 private:
-	string name;
+	
+	fstream fin;
+	fstream fout;
+	string problemName;
 	int lowerBound, upperBound;
-	string standardName, forceName;
+	string standardCodeName, forceCodeName, standardExecName, forceExecName;
 	string dataDir, tmpDir, inputFile, outputFile;
-	vector<void (*)(DataMaker &, int)> method;
+	vector<CustomFunction> method;
 };
 
 #endif //DATAMAKER_DATAMAKER_H

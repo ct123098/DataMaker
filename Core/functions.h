@@ -47,6 +47,16 @@ string redirectInput(const string &name);
 
 string redirectOutput(const string &name);
 
+string fileExist(const string file);
+
+string fileNotExist(const string file);
+
+string selectionIf(const string &condition, const string statement);
+
+string selectionElse(const string &condition, const string statement);
+
+string selectionIfElse(const string &condition, const string statement1, const string statement2);
+
 
 // overload string + int/double
 string operator +(const string &s, const int &a);

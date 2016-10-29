@@ -2,12 +2,11 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "Core/DataMaker.cpp"
-#include "Core/functions.cpp"
+#include "Core/autoloader"
 
 using namespace std;
 
-DataMaker D("AplusB", 1, 10);
+DataMaker D;
 fstream &fin = D.getFin();
 fstream &fout = D.getFout();
 
@@ -31,9 +30,10 @@ void fun2(int id)
 
 int main()
 {
-	D.setStandardName("std.cpp")
-			.setMethod(1, 4, fun1)
-			.setMethod(5, 10, fun2);
+	D.setName("AplusB")
+			.setStandardCodeName("std.cpp")
+			.setMethod(1, 3, fun1)
+			.setMethod(10, fun2);
 	
 	D.generate();
 	

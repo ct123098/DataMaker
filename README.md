@@ -5,7 +5,7 @@
 
 ## What is this?
 
-A small tool which can help you generating data.
+A small tool which can help you generating test data.
 
 TODO~~~
 
@@ -15,33 +15,37 @@ TODO~~~
 
 #### Constructor
 
-`void DataMaker::DataMaker(string _name, int _lower, int _upper, string _stdName, string _forceName)`
+`void DataMaker()`
 
-| Parameter Name | type   | compulsory/optional | description                              |
-| -------------- | ------ | ------------------- | ---------------------------------------- |
-| _name          | string | compulsory          | the name of the problem                  |
-| _lower         | int    | compulsory          | the lower bound of the data number       |
-| _upper         | int    | compulsory          | the upper bound of the data number       |
-| _stdName       | string | optional            | the name of the standard code            |
-| _forceName     | string | optional            | the name of the code using brute force algorithm |
+
 
 #### Settings
 
-`DataMaker &setTmpDir(string _name)`
+##### compulsory
 
 `DataMaker &setName(string _name)`To set the name of the problem.
 
-`DataMaker &setBound(int _lower, int _upper)`To set the bound of the data number.
+
+
+##### optional
+
+`DataMaker &setTmpDir(string _name)`
+
+`DataMaker &setDataDir(string _name)`
+
+
 
 `DataMaker &setStandardName(string _name)`To set the name of the standard code.
 
-`DataMaker &setForceName(string _name)`To set the name of the code using brute force algorithm.
+`DataMaker &setForceName(string _name)`To set the name of the brute force code.
 
 
 
 #### Custom function
 
- `typedef void(*CustomFunction)(int);`
+##### form
+
+ `typedef void(*CustomFunctionPointer)(int);`
 
 You can write your functions to generate data according to your purpose. Your functions must written as`void fun(int id)`. These functions well be used when the function `generate()` be called.
 
@@ -51,9 +55,9 @@ You can write your functions to generate data according to your purpose. Your fu
 
 
 
-`DataMaker& setMethod(int l, int r, CustomFunction fun)`
+##### setting method
 
-`DataMaker &setMethod(int x, CustomFunction fun)`
+`DataMaker& setMethod(int l, int r, CustomFunction fun)`
 
 | Parameter Name | type           | compulsory/optional | description                              |
 | -------------- | -------------- | ------------------- | ---------------------------------------- |
@@ -61,13 +65,17 @@ You can write your functions to generate data according to your purpose. Your fu
 | r              | int            | compulsory          | the upper bound                          |
 | fun            | CustomFunction | compulsory          | the function well be used to generate groups of data whose index belong to the interval [l, r] |
 
+`DataMaker &setMethod(int x, CustomFunction fun)` can also be used to set a single test data.
+
 
 
 #### Generate
 
 `void DataMaker::generate(void)` 
 
-When you have finished all the setting, you can call this function and wait for the data.
+When you have finished all the setting, you can call this function.
+
+You will be given a information list with all the parameters. After confirming it, you can wait for the test data.
 
 
 
@@ -111,11 +119,15 @@ These functions may help you a lot.
 
 `int system(string cmd)` You can use `string` to call `system()`.
 
-
+##### Basic Informations
 
 `string getOS()`
 
 `string getPathSeparator()`
+
+
+
+##### Statements
 
 `string compile(string source, string exec)`
 
@@ -133,6 +145,24 @@ These functions may help you a lot.
 
 
 
+##### Conditions
+
+`string fileExist(string file)`
+
+`string fileNotExist(string file)`
+
+
+
+##### Selection
+
+`string selectionIf(string condition, string statement)`
+
+`string selectionElse(string condition, string statement)`
+
+`string selectionIfElse(string condition, string statement1, string statement2)`
+
+
+
 TODO~~~
 
 
@@ -144,12 +174,11 @@ main.cpp
 #include <cstdio>
 #include <cstdlib>
 
-#include "Core/DataMaker.cpp"
-#include "Core/functions.cpp"
+#include "Core/autoloader"
 
 using namespace std;
 
-DataMaker D("AplusB", 1, 10);
+DataMaker D;
 fstream &fin = D.getFin();
 fstream &fout = D.getFout();
 
@@ -173,12 +202,14 @@ void fun2(int id)
 
 int main()
 {
-	D.setStandardName("std.cpp")
-			.setMethod(1, 4, fun1)
-			.setMethod(5, 10, fun2);
+	D.setName("AplusB")
+			.setStandardCodeName("std.cpp")
+			.setMethod(1, 3, fun1)
+			.setMethod(10, fun2);
 	
 	D.generate();
 	
 	return 0;
 }
+
 ```

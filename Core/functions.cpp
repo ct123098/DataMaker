@@ -166,6 +166,66 @@ string redirectOutput(const string &name)
 #endif
 }
 
+string fileExist(const string file)
+{
+#ifdef _WIN32
+	return string() + " exist " + "\"" + file + "\"";
+#elif linux
+	return string() + " -a " + "\"" + file + "\"";
+#else
+	error("Can't recognize which OS it is!");
+	return "";
+#endif
+}
+
+string fileNotExist(const string file)
+{
+#ifdef _WIN32
+	return string() + " not exist " + "\"" + file + "\"";
+#elif linux
+	return string() + " ! -a " + "\"" + file + "\"";
+#else
+	error("Can't recognize which OS it is!");
+	return "";
+#endif
+}
+
+string selectionIf(const string &condition, const string statement)
+{
+#ifdef _WIN32
+	return string() + "if " + condition + " (" + statement + ")";
+#elif linux
+	return string() + "if [ " + condition + " ]; then\n" + statement + "\nfi\n";
+#else
+	error("Can't recognize which OS it is!");
+	return "";
+#endif
+}
+
+string selectionElse(const string &condition, const string statement)
+{
+#ifdef _WIN32
+	return string() + "if " + condition + " else " + "(" + statement + ")";
+#elif linux
+	return string() + "if [ " + condition + " ]; then\n" + "else\n" + statement + "\nfi\n";
+#else
+	error("Can't recognize which OS it is!");
+	return "";
+#endif
+}
+
+string selectionIfElse(const string &condition, const string statement1, const string statement2)
+{
+#ifdef _WIN32
+	return string() + "if " + condition + " (" + statement1 + ") " + "else " + "(" + statement2 + ")";
+#elif linux
+	return string() + "if [ " + condition + " ]; then\n" + statement1 + "\nelse\n" + statement2 + "\nfi\n";
+#else
+	error("Can't recognize which OS it is!");
+	return "";
+#endif
+}
+
 // overload string + int/double
 string operator +(const string &s, const int &a)
 {
@@ -195,7 +255,7 @@ string operator +(const double &a, const string &s)
 // throw an exception
 void error(const string &err)
 {
-	cout << "Error encountered : " << err << endl;
+	cout << "!!! Error encountered : " << err << " !!!" << endl;
 	exit(1);
 }
 

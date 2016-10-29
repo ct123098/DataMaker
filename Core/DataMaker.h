@@ -8,57 +8,82 @@
 #include <cstring>
 #include <algorithm>
 
-#include <vector>
+#include <ctime>
+
 #include <string>
+#include <vector>
+#include <map>
+#include <set>
 
 #include "functions.h"
 
 using namespace std;
 
 // DataMaker
-typedef void(*CustomFunction)(int);
+typedef void(*CustomFunctionPointer)(int);
 
 class DataMaker
 {
 public:
 	
-	DataMaker(string _name, int _lower, int _upper, string _stdName = "", string _forceName = "");
+	DataMaker();
 	
 	~DataMaker();
+	
+	
+	void clear();
+	
+	void cleanup();
+	
+	void info();
+	
 	
 	fstream &getFin();
 	
 	fstream &getFout();
 	
-	DataMaker &setTmpDir(string _name);
 	
 	DataMaker &setName(string _name);
 	
-	DataMaker &setBound(int _lower, int _upper);
+	DataMaker &setTmpDir(string _name);
 	
-	DataMaker &setStandardName(string _name);
+	DataMaker &setDataDir(string _name);
 	
-	DataMaker &setForceName(string _name);
+	DataMaker &setStandardCodeName(string _name);
 	
-	DataMaker &setMethod(int l, int r, CustomFunction fun);
+	DataMaker &setForceCodeName(string _name);
 	
-	DataMaker &setMethod(int x, CustomFunction fun);
+	DataMaker &setMethod(int l, int r, CustomFunctionPointer fun);
+	
+	DataMaker &setMethod(int x, CustomFunctionPointer fun);
+	
+	
+	void makeTmpDir();
+	
+	void makeDataDir();
+	
+	void compileStandardCode();
+	
+	void compileForceCode();
+	
+	
+	void generate();
+	
 	
 	void runStandardProgram();
 	
 	void runForceProgram();
-	
-	void generate();
+
 
 private:
 	
-	fstream fin;
-	fstream fout;
+	fstream fin, fout;
+	string inputFile, outputFile;
+	
 	string problemName;
-	int lowerBound, upperBound;
 	string standardCodeName, forceCodeName, standardExecName, forceExecName;
-	string dataDir, tmpDir, inputFile, outputFile;
-	vector<CustomFunction> method;
+	string dataDir, tmpDir;
+	map<int, CustomFunctionPointer> method;
 };
 
 #endif //DATAMAKER_DATAMAKER_H

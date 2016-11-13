@@ -11,66 +11,37 @@
 using namespace std;
 
 // rand extension
-int randInt();
+extern int randInt();
 
-long long randLongLong();
+extern long long randLongLong();
 
-double randDouble();
+extern double randDouble();
 
-int rand(int l, int r);
+extern int rand(int l, int r);
 
-long long rand(long long l, long long r);
+extern long long rand(long long l, long long r);
 
-double rand(double l, double r);
+extern double rand(double l, double r);
 
-string randString(int len, char st = 'a', char ed = 'z');
+extern string randString(int len, char st = 'a', char ed = 'z');
 
 
 //system commands extension
-int system(const string &cmd);
-
-string getOS();
-
-string getPathSeparator();
-
-string compile(const string &source, const string &exec);
-
-string run(const string &exec);
-
-string makeDirectory(const string &name);
-
-string removeDirectory(const string &name);
-
-string removeFile(const string &name);
-
-string redirectInput(const string &name);
-
-string redirectOutput(const string &name);
-
-string fileExist(const string file);
-
-string fileNotExist(const string file);
-
-string selectionIf(const string &condition, const string statement);
-
-string selectionElse(const string &condition, const string statement);
-
-string selectionIfElse(const string &condition, const string statement1, const string statement2);
+extern int system(const string &cmd);
 
 
 // overload string + int/double
-string operator +(const string &s, const int &a);
+extern string operator +(const string &s, const int &a);
 
-string operator +(const string &s, const double &a);
+extern string operator +(const string &s, const double &a);
 
-string operator +(const int &a, const string &s);
+extern string operator +(const int &a, const string &s);
 
-string operator +(const double &a, const string &s);
+extern string operator +(const double &a, const string &s);
+
 
 // throw an exception
-void error(const string &err);
+extern void error(const string &err);
 
-const string SEP = getPathSeparator();
-const string OS = getOS();
 
 #endif //DATAMAKER_FUNCTIONS_H

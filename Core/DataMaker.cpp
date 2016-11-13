@@ -7,9 +7,9 @@ DataMaker::DataMaker()
 {
 	srand(time(0));
 	clear();
-	
+
 	setName("problem");
-	setTmpDir("tmp");
+	setTmpDir("Tmp");
 }
 
 DataMaker::~DataMaker()
@@ -22,12 +22,12 @@ void DataMaker::clear()
 	fin.clear();
 	fout.clear();
 	inputFile = outputFile = "";
-	
+
 	problemName = "";
 	standardCodeName = standardExecName = "";
 	forceCodeName = forceExecName = "";
 	dataDir = tmpDir = "";
-	
+
 	method.clear();
 }
 
@@ -121,7 +121,7 @@ void DataMaker::makeDataDir()
 	string cmd = selectionIf(fileNotExist(dataDir), makeDirectory(dataDir));
 	if(system(cmd))
 		error(string() + "Can't make data directory! " + "(" + cmd + ")");
-	
+
 }
 
 void DataMaker::makeTmpDir()
@@ -150,30 +150,30 @@ void DataMaker::compileForceCode()
 void DataMaker::generate()
 {
 	info();
-	
+
 	makeDataDir();
 	makeTmpDir();
 	if(!standardCodeName.empty()) compileStandardCode();
 	if(!forceCodeName.empty()) compileForceCode();
-	
+
 	for(map<int, CustomFunctionPointer>::iterator it = method.begin(); it != method.end(); it++)
 	{
 		int id = it->first;
 		CustomFunctionPointer fun = it->second;
-		
+
 		inputFile = dataDir + problemName + id + ".in";
 		outputFile = dataDir + problemName + id + ".out";
-		
+
 		cout << "Running Case#" << id << " (" + inputFile + ", " + outputFile + ") " + " : " << endl;
-		
+
 		fin.open(inputFile.c_str(), ios::out);
 		fout.open(outputFile.c_str(), ios::out);
-		
+
 		if(!fin) error("Can't open " + inputFile);
 		if(!fout) error("Can't open " + outputFile);
-		
+
 		fun(id);
-		
+
 		fin.close();
 		fout.close();
 	}
@@ -186,14 +186,14 @@ void DataMaker::runStandardProgram()
 	if(standardExecName == "") error("standardName id empty!");
 	if(inputFile == "") error("no input file");
 	if(outputFile == "") error("no output file");
-	
+
 	fin.close();
 	fout.close();
-	
+
 	string cmd = run(standardExecName) + redirectInput(inputFile) + redirectOutput(outputFile);
 	if(system(cmd))
 		error(string() + "can't run standard program " + "(" + cmd + ")");
-	
+
 	fin.open(inputFile.c_str(), ios::out | ios::app);
 	fout.open(outputFile.c_str(), ios::out | ios::app);
 }
@@ -203,14 +203,14 @@ void DataMaker::runForceProgram()
 	if(forceExecName == "") error("forceName is empty!");
 	if(inputFile == "") error("no input file");
 	if(outputFile == "") error("no output file");
-	
+
 	fin.close();
 	fout.close();
-	
+
 	string cmd = run(forceExecName) + redirectInput(inputFile) + redirectOutput(outputFile);
 	if(system(cmd))
 		error(string() + "can't run force program " + "(" + cmd + ")");
-	
+
 	fin.open(inputFile.c_str(), ios::out | ios::app);
 	fout.open(outputFile.c_str(), ios::out | ios::app);
 }

@@ -174,7 +174,7 @@ main.cpp
 #include <cstdio>
 #include <cstdlib>
 
-#include "Core/autoloader"
+#include "Core/autoloader.h"
 
 using namespace std;
 
@@ -206,9 +206,9 @@ int main()
 			.setStandardCodeName("std.cpp")
 			.setMethod(1, 3, fun1)
 			.setMethod(10, fun2);
-	
+
 	D.generate();
-	
+
 	return 0;
 }
 

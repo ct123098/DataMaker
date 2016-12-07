@@ -2,6 +2,10 @@
 
 *produced by ChenTong*
 
+[Download](https://github.com/ct123098/DataMaker/archive/master.zip)
+
+
+
 
 ## What is this?
 
@@ -47,7 +51,7 @@ TODO~~~
 
  `typedef void(*CustomFunctionPointer)(int);`
 
-You can write your functions to generate data according to your purpose. Your functions must written as`void fun(int id)`. These functions well be used when the function `generate()` be called.
+You can write your functions to generate data according to your purpose. Your functions must be written as`void fun(int id)`. These functions will be used when the function `generate()` be called.
 
 | Parameter Name | type | compulsory/optional | description                      |
 | -------------- | ---- | ------------------- | -------------------------------- |

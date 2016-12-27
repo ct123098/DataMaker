@@ -9,7 +9,7 @@ DataMaker::DataMaker()
 	clear();
 
 	setName("problem");
-	setTmpDir("Tmp");
+	setTmpDir("tmp");
 }
 
 DataMaker::~DataMaker()
@@ -58,12 +58,12 @@ void DataMaker::info()
 	getchar();
 }
 
-fstream &DataMaker::getFin()
+fstream &DataMaker::getInFstream()
 {
 	return fin;
 }
 
-fstream &DataMaker::getFout()
+fstream &DataMaker::getOutFstream()
 {
 	return fout;
 }
@@ -147,40 +147,6 @@ void DataMaker::compileForceCode()
 			  + "(" + cmd + ")");
 }
 
-void DataMaker::generate()
-{
-	info();
-
-	makeDataDir();
-	makeTmpDir();
-	if(!standardCodeName.empty()) compileStandardCode();
-	if(!forceCodeName.empty()) compileForceCode();
-
-	for(map<int, CustomFunctionPointer>::iterator it = method.begin(); it != method.end(); it++)
-	{
-		int id = it->first;
-		CustomFunctionPointer fun = it->second;
-
-		inputFile = dataDir + problemName + id + ".in";
-		outputFile = dataDir + problemName + id + ".out";
-
-		cout << "Running Case#" << id << " (" + inputFile + ", " + outputFile + ") " + " : " << endl;
-
-		fin.open(inputFile.c_str(), ios::out);
-		fout.open(outputFile.c_str(), ios::out);
-
-		if(!fin) error("Can't open " + inputFile);
-		if(!fout) error("Can't open " + outputFile);
-
-		fun(id);
-
-		fin.close();
-		fout.close();
-	}
-	cout << "Succeed!" << endl;
-}
-
-
 void DataMaker::runStandardProgram()
 {
 	if(standardExecName == "") error("standardName id empty!");
@@ -213,4 +179,38 @@ void DataMaker::runForceProgram()
 
 	fin.open(inputFile.c_str(), ios::out | ios::app);
 	fout.open(outputFile.c_str(), ios::out | ios::app);
+}
+
+
+void DataMaker::generate()
+{
+	info();
+
+	makeDataDir();
+	makeTmpDir();
+	if(!standardCodeName.empty()) compileStandardCode();
+	if(!forceCodeName.empty()) compileForceCode();
+
+	for(map<int, CustomFunctionPointer>::iterator it = method.begin(); it != method.end(); it++)
+	{
+		int id = it->first;
+		CustomFunctionPointer fun = it->second;
+
+		inputFile = dataDir + problemName + id + ".in";
+		outputFile = dataDir + problemName + id + ".out";
+
+		cout << "Running Case#" << id << " (" + inputFile + ", " + outputFile + ") " + " : " << endl;
+
+		fin.open(inputFile.c_str(), ios::out);
+		fout.open(outputFile.c_str(), ios::out);
+
+		if(!fin) error("Can't open " + inputFile);
+		if(!fout) error("Can't open " + outputFile);
+
+		fun(id);
+
+		fin.close();
+		fout.close();
+	}
+	cout << "Succeed!" << endl;
 }

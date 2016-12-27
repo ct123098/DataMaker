@@ -15,8 +15,8 @@
 #include <map>
 #include <set>
 
-#include "system.h"
-#include "functions.h"
+#include "functions/system.h"
+#include "functions/functions.h"
 
 using namespace std;
 
@@ -26,61 +26,59 @@ typedef void(*CustomFunctionPointer)(int);
 class DataMaker
 {
 public:
-	
+
 	DataMaker();
-	
+
 	~DataMaker();
-	
-	
+
+
 	void clear();
-	
+
 	void cleanup();
-	
+
 	void info();
-	
-	
-	fstream &getFin();
-	
-	fstream &getFout();
-	
-	
+
+
+	fstream &getInFstream();
+
+	fstream &getOutFstream();
+
+
 	DataMaker &setName(string _name);
-	
+
 	DataMaker &setTmpDir(string _name);
-	
+
 	DataMaker &setDataDir(string _name);
-	
+
 	DataMaker &setStandardCodeName(string _name);
-	
+
 	DataMaker &setForceCodeName(string _name);
-	
+
 	DataMaker &setMethod(int l, int r, CustomFunctionPointer fun);
-	
+
 	DataMaker &setMethod(int x, CustomFunctionPointer fun);
-	
-	
+
+
 	void makeTmpDir();
-	
+
 	void makeDataDir();
-	
+
 	void compileStandardCode();
-	
+
 	void compileForceCode();
-	
-	
-	void generate();
-	
-	
+
 	void runStandardProgram();
-	
+
 	void runForceProgram();
 
 
+	void generate();
+
 private:
-	
+
 	fstream fin, fout;
 	string inputFile, outputFile;
-	
+
 	string problemName;
 	string standardCodeName, forceCodeName, standardExecName, forceExecName;
 	string dataDir, tmpDir;

@@ -2,36 +2,45 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include "Core/DataMaker.h"
+
+// optional - load cpp files
 #include "Core/autoloader"
 
 using namespace std;
 
 DataMaker D;
-fstream &fin = D.getFin();
-fstream &fout = D.getFout();
+fstream &fin = D.getInFstream();
+fstream &fout = D.getOutFstream();
 
-void fun1(int id)
+// parameters
+int par[0][0] = {
+		// TODO
+};
+
+void fun1(int id) // TODO
 {
-	int a = rand(1, id), b = rand(id, 10);
-	cout << a << ' ' << b << endl;
-	fin << a << endl;
-	fin << b << endl;
-	fout << a + b << endl;
+	int n = 0, m = 0;
+
+	fin << n << ' ' << m << endl;
+
+	fout << 0 << endl;
 }
 
-void fun2(int id)
+void fun2(int id) // TODO
 {
-	int a = rand(0, 1000000 * id * id * id), b = rand(0, 1000000 * id * id * id);
-	cout << a << ' ' << b << endl;
-	fin << a << endl;
-	fin << b << endl;
+	int n = 0, m = 0;
+
+	fin << n << ' ' << m << endl;
+
 	D.runStandardProgram();
 }
 
 int main()
 {
-	D.setName("AplusB")
-			.setStandardCodeName("std.cpp")
+	// TODO
+	D.setName("{problem name}")
+			.setStandardCodeName("{standard code name}.cpp")
 			.setMethod(1, 3, fun1)
 			.setMethod(10, fun2);
 
@@ -39,4 +48,3 @@ int main()
 
 	return 0;
 }
-

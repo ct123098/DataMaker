@@ -15,7 +15,6 @@ namespace datamaker
 		data_dir = json_val.get("data_dir", "./data/").asString();
 		tmp_dir = json_val.get("tmp_dir", "./tmp/").asString();
 		standard_code = json_val.get("standard_code", "std.cpp").asString();
-		force_code = json_val.get("force_code", "force.cpp").asString();
 		for(int i = 0; i < json_val["generating_method"].size(); i++)
 			groups.push_back(Group(json_val["generating_method"][i]));
 	}
@@ -90,24 +89,25 @@ namespace datamaker
 			info.standard_prog = info.tmp_dir + "std";
 			compile(info.standard_code, info.standard_prog, "");
 		}
-		if(info.force_code != "")
-		{
-			info.force_code = info.solver_dir + info.force_code;
-			info.force_prog = info.tmp_dir + "force";
-			compile(info.force_code, info.force_prog, "");
-		}
 
 		for(int t = 0; t < info.index.size(); t++)
 		{
 			int id = info.index[t];
-			cout << "Generating case" << id << "... " << endl;
-			input.open(info.data_dir + info.problem_name + id + ".in", ios::out);
+			info.cur_id = id;
+
+			cout << "Generating case " << id << "... " << endl;
+
+			info.cur_input_str = info.data_dir + info.problem_name + id + ".in";
+			input.open(info.cur_input_str, ios::out);
 			xassert(input.is_open(), "can't open data input file");
 
-			output.open(info.data_dir + info.problem_name + id + ".out", ios::out);
+			info.cur_output_str = info.data_dir + info.problem_name + id + ".out";
+			output.open(info.cur_output_str, ios::out);
 			xassert(output.is_open(), "can't open data output file");
 
 			method func = info.id_to_func[id];
+			xassert(func, "");
+
 			vector<int> vec = info.id_to_par[id];
 			stringstream ss;
 			ss << id << endl;
@@ -120,11 +120,19 @@ namespace datamaker
 			input.close();
 			output.close();
 			cout << "Finished" << endl;
+			cout << endl;
 		}
 	}
 
 	void clean()
 	{
 		remove_directory(info.tmp_dir);
+	}
+
+	void run_standard()
+	{
+		input.close();
+		output.close();
+		execute(info.standard_prog, " < " + info.cur_input_str + " > " + info.cur_output_str);
 	}
 }

@@ -3,8 +3,7 @@
 	"solver_dir": "./",			// solver code directory (default: "./")
 	"data_dir": "./data/",		// data directory (default: "./data/")
 	"tmp_dir": "./tmp/",			// temporary directory (default: "./tmp/")
-	"standard_code": "",	// standard code position - [solver_dir]/[standard_code]
-	"force_code": "",	// brute force code position - [solver_dir]/[force_code]
+	"standard_code": "std.cpp",	// standard code position - [solver_dir]/[standard_code]
 	"generating_method": [		// set how to generate data for each subtasks
 		{						// a group of data
 			"index": [1, 2, 3], // data index
@@ -13,6 +12,13 @@
 				{"id": [1], "par": [2, 3]},
 				{"id": [2], "par": [100, 233]},
 				{"id": [3], "par": [1000000, 1000001]}
+			]
+		},
+		{						// a group of data
+			"index": [4, 5, 6], // data index
+			"function": "fun2", // generator function name
+			"parameter": [		// parameters for each data (only integer)
+				{"id": [4, 5, 6], "par": [1000000000, 1000000000]}
 			]
 		}
 	]

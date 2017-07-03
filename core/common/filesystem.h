@@ -21,9 +21,9 @@ namespace datamaker
 //
 //	extern string getPathSeparator();
 
-	extern bool compile(const string &source, const string &exec, const string &par);
+	extern bool compile(const string &source, const string &exec, const string &par = "");
 
-	extern bool run(const string &exec);
+	extern bool execute(const string &exec, const string &par = "");
 
 	extern bool create_directory(const string &name);
 

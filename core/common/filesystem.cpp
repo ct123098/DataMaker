@@ -11,9 +11,9 @@ namespace datamaker
 	{
 		return xsystem("g++ " +  source + " -o " + exec + "  " + par);
 	}
-	bool run(const string &exec)
+	bool execute(const string &exec, const string &par)
 	{
-		return xsystem("./" + exec);
+		return xsystem("./" + exec + "  " + par);
 	}
 	bool create_directory(const string &name)
 	{
@@ -32,7 +32,7 @@ namespace datamaker
 	{
 		return xsystem("g++ " +  source + " -o " + exec + "  " + par);
 	}
-	bool run(const string &exec)
+	bool execute(const string &exec)
 	{
 		return xsystem(exec);
 	}

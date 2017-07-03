@@ -30,8 +30,7 @@ namespace datamaker
 	{
 		string problem_name;
 		string solver_dir, data_dir, tmp_dir;
-		string standard_code, force_code;
-		string standard_prog, force_prog;
+		string standard_code, standard_prog;
 
 		struct Group
 		{
@@ -62,6 +61,9 @@ namespace datamaker
 		map<int, vector<int> > id_to_par;
 		map<int, method> id_to_func;
 
+		int cur_id;
+		string cur_input_str, cur_output_str;
+
 		Info();
 
 		Info(Json::Value json_val);
@@ -80,6 +82,7 @@ namespace datamaker
 
 	extern void clear();
 
+	extern void run_standard();
 }
 
 

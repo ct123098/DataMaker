@@ -1,50 +1,32 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
+#include <algorithm>
 
-#include "Core/DataMaker.h"
-
-// optional - load cpp files
-#include "Core/autoloader"
+#include "core/datamaker.h"
+#include "core/load_cpp.inc"
 
 using namespace std;
 
-DataMaker D;
-fstream &fin = D.getInFstream();
-fstream &fout = D.getOutFstream();
-
-// parameters
-int par[0][0] = {
-		// TODO
-};
-
-void fun1(int id) // TODO
+void fun1()
 {
-	int n = 0, m = 0;
-
-	fin << n << ' ' << m << endl;
-
-	fout << 0 << endl;
-}
-
-void fun2(int id) // TODO
-{
-	int n = 0, m = 0;
-
-	fin << n << ' ' << m << endl;
-
-	D.runStandardProgram();
+	using namespace datamaker;
+	int id, a, b;
+	cin >> id >> a >> b;
+//	cout << a << ' ' << b << endl;
+	input << a << ' ' << b << endl;
+	output << a + b << endl;
 }
 
 int main()
 {
-	// TODO
-	D.setName("{problem name}")
-			.setStandardCodeName("{standard code name}.cpp")
-			.setMethod(1, 3, fun1)
-			.setMethod(10, fun2);
+	ios::sync_with_stdio(false);
 
-	D.generate();
-
+	datamaker::init();
+	datamaker::bind("fun1", fun1);
+	datamaker::run();
+	datamaker::clean();
+	
 	return 0;
 }

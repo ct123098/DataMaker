@@ -1,0 +1,80 @@
+#include "functions.h"
+
+namespace datamaker
+{
+// rand extension
+	bool rand_bool()
+	{
+		return rand() & 1;
+	}
+
+	int rand_int()
+	{
+		return (((rand() & 32767) << 15) | (rand() & 32767));
+	}
+
+	long long rand_ll()
+	{
+		return ((long long) rand_int() << 30) | (long long) rand_int();
+	}
+
+	double rand_double()
+	{
+		return (double) rand_int() / (1 << 30);
+	}
+
+	int rand_range(int l, int r)
+	{
+		xassert(l <= r, "rand(int, int) : l is bigger than r");
+		return rand_int() % (r - l + 1) + l;
+	}
+
+	long long rand_range(long long l, long long r)
+	{
+		xassert(l <= r, "rand(long long, long long) : l is bigger than r");
+		return rand_ll() % (r - l + 1) + l;
+	}
+
+	double rand_range(double l, double r)
+	{
+		xassert(l <= r, "rand(double, double) : l is bigger than r");
+		return rand_double() * (r - l) + l;
+	}
+
+	string rand_string(int len, char st, char ed)
+	{
+		xassert(len >= 0, "randString() : len can't be a negative number");
+		xassert(st <= ed, "randString() : st is bigger than ed");
+		string ret = "";
+		for(int i = 1; i <= len; i++)
+			ret += (char) rand_range((int) st, (int) ed);
+		return ret;
+	}
+
+//	system commands extension
+	int xsystem(const string &cmd)
+	{
+//	cout << "system() : " << cmd << endl;
+		return system(cmd.c_str());
+	}
+
+// overload string + int/double
+	template<typename T1, typename T2>
+	string operator + (const T1 &t1, const T2 &t2)
+	{
+		static stringstream ss; ss.clear();
+		string ret;
+		ss << t1 << t2, ss >> ret;
+		return ret;
+	}
+
+// throw an exception
+	void xassert(bool expr, const string &msg)
+	{
+		if(!expr)
+		{
+			cerr << "!!! Assertion Failed !!!" << " - " << msg << endl;
+			exit(1);
+		}
+	}
+}

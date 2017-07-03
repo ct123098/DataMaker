@@ -1,0 +1,19 @@
+{
+	"problem_name": "aplusb",	// problem name
+	"solver_dir": "./",			// solver code directory (default: "./")
+	"data_dir": "./data/",		// data directory (default: "./data/")
+	"tmp_dir": "./tmp/",			// temporary directory (default: "./tmp/")
+	"standard_code": "",	// standard code position - [solver_dir]/[standard_code]
+	"force_code": "",	// brute force code position - [solver_dir]/[force_code]
+	"generating_method": [		// set how to generate data for each subtasks
+		{						// a group of data
+			"index": [1, 2, 3], // data index
+			"function": "fun1", // generator function name
+			"parameter": [		// parameters for each data (only integer)
+				{"id": [1], "par": [2, 3]},
+				{"id": [2], "par": [100, 233]},
+				{"id": [3], "par": [1000000, 1000001]}
+			]
+		}
+	]
+}

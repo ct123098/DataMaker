@@ -34,7 +34,7 @@ bool chk2()
 {
 	using namespace datamaker;
 	int id, a, b, x, y;
-	cin >> id >> a >> b;
+	cin >> a >> b;
 	input >> x >> y;
 	cout << a << ' ' << b << ' ' << x << ' ' << y << endl;
 	return x + y > a + b;

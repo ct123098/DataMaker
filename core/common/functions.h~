@@ -33,7 +33,7 @@ namespace datamaker
 
 
 //system commands extension
-	extern bool xsystem(const string &cmd);
+	extern int xsystem(const string &cmd);
 
 
 //  overload string + int/double

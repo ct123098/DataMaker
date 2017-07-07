@@ -147,7 +147,7 @@ namespace datamaker
 				for(int i = 0; i < vec.size(); i++)
 					ss << vec[i] << ' ';
 				cin.rdbuf(ss.rdbuf());
-				
+			
 				bool flag = chk_func();
 				
 				input.close();

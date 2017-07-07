@@ -36,8 +36,6 @@ namespace datamaker
 //	extern string redirect_output(const string &name);
 
 	extern bool has_file(const string &name);
-	
-	extern bool sleep(const string &time);
 
 //	extern string fileExist(const string file);
 //

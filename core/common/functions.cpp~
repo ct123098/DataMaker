@@ -54,7 +54,7 @@ namespace datamaker
 //	system commands extension
 	bool xsystem(const string &cmd)
 	{
-//		cout << "system() : " << cmd << endl;
+		cout << "system() : " << cmd << endl;
 		return ::system(cmd.c_str()) == 0;
 	}
 
